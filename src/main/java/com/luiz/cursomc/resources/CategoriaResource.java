@@ -3,26 +3,29 @@ package com.luiz.cursomc.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luiz.cursomc.domain.Categoria;
+import com.luiz.cursomc.repositories.CategoriaRepository;
+import com.luiz.cursomc.services.CategoriaService;
 
 @RestController
 @RequestMapping (value = "/categorias")
 public class CategoriaResource {
 
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Categoria> listar() {
+	@Autowired
+	private CategoriaService service;
+	
+	@RequestMapping(value="{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> find(@PathVariable Integer id) {
 		
-		Categoria c1 = new Categoria(1, "Books");
-		Categoria c2 = new Categoria(2, "Movies");
-		List<Categoria> categoriaList = new ArrayList<>();
+		Categoria obj = service.find(id);
+		return ResponseEntity.ok().body(obj);
 		
-		categoriaList.add(c1);
-		categoriaList.add(c2);
-		
-		return categoriaList;
 	}
 }
